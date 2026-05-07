@@ -1,0 +1,1 @@
+# SQLAlchemy job application models will be added in the CRUD phase.

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { createApplication } from "@/lib/api";
 import type { ApplicationStatus, JobApplicationCreate } from "@/types/application";
+import Link from "next/link";
 
 const statuses: ApplicationStatus[] = [
     "Applied",
@@ -65,7 +66,7 @@ export default function NewApplicationPage() {
         <main className="min-h-screen bg-zinc-50 px-6 py-8 text-zinc-950">
         <div className="mx-auto max-w-3xl">
           <header className="border-b border-zinc-200 pb-6">
-            <p className="text-sm font-medium text-zinc-500">Applications</p>
+            <Link href="/applications" className="text-sm font-medium text-zinc-500 hover:text-zinc-900">Applications</Link>
             <h1 className="mt-1 text-3xl font-semibold tracking-tight">
               Add Application
             </h1>

@@ -31,3 +31,6 @@ PLANS.md
 # OS / editor
 .DS_Store
 .vscode/
+
+
+*.db

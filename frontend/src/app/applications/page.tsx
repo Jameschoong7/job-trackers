@@ -1,0 +1,60 @@
+import Link from "next/link";
+
+import { getApplications } from "@/lib/api";
+
+export default async function ApplicationsPage() {
+    const applications = await getApplications();
+
+    return (
+      <main className="min-h-screen bg-zinc-50 px-6 py-8 text-zinc-950">
+        <div className="mx-auto flex max-w-6xl flex-col gap-6">
+          <header className="flex flex-col gap-4 border-b border-zinc-200 pb-6 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="text-sm font-medium text-zinc-500">Applications</p>
+              <h1 className="mt-1 text-3xl font-semibold tracking-tight">
+                Job Applications
+              </h1>
+            </div>
+
+            <Link
+              href="/applications/new"
+              className="w-fit rounded-md bg-zinc-950 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800"
+            >
+              Add Application
+            </Link>
+          </header>
+
+          {applications.length === 0 ? (
+            <section className="rounded-md border border-dashed border-zinc-300 bg-white p-8">
+              <h2 className="text-lg font-medium">No applications yet</h2>
+              <p className="mt-2 max-w-xl text-sm leading-6 text-zinc-600">
+                Add your first demo application once the create form is ready.
+              </p>
+            </section>
+          ) : (
+            <section className="overflow-hidden rounded-md border border-zinc-200 bg-white">
+              <div className="grid grid-cols-4 border-b border-zinc-200 px-4 py-3 text-sm font-medium text-zinc-500">
+                <span>Company</span>
+                <span>Role</span>
+                <span>Status</span>
+                <span>Date Applied</span>
+              </div>
+
+              {applications.map((application) => (
+                <Link
+                  key={application.id}
+                  href={`/applications/${application.id}`}
+                  className="grid grid-cols-4 px-4 py-3 text-sm hover:bg-zinc-50"
+                >
+                  <span className="font-medium">{application.company}</span>
+                  <span>{application.role}</span>
+                  <span>{application.status}</span>
+                  <span>{application.date_applied}</span>
+                </Link>
+              ))}
+            </section>
+          )}
+        </div>
+      </main>
+    );
+  }

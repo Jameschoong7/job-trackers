@@ -20,7 +20,22 @@ backend/    FastAPI app
 
 ## Local Development
 
-Run the backend and frontend in separate terminals.
+Run the backend and frontend in separate terminals, or use the root helper script.
+
+### Fast Start
+
+From the project root:
+
+```bash
+./run-local.sh
+```
+
+What it does:
+
+- creates tables in `backend/dev.db` if needed
+- starts the backend on `http://127.0.0.1:8000`
+- starts the frontend on `http://localhost:3000`
+- stops the backend when you stop the script
 
 ### Backend Setup
 

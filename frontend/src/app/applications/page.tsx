@@ -27,7 +27,15 @@ export default async function ApplicationsPage({
   const { status } = await searchParams;
   const selectedStatus = isApplicationStatus(status) ? status : undefined;
   const applications = await getApplications(selectedStatus);
+  const allApplications = selectedStatus
+    ? await getApplications()
+    : applications;
 
+  const summaryItems = statuses.map((status) => ({
+    label: status,
+    value: allApplications.filter((application) => application.status === status)
+      .length,
+  }));
   return (
     <main className="min-h-screen bg-zinc-50 px-6 py-8 text-zinc-950">
       <div className="mx-auto flex max-w-6xl flex-col gap-6">
@@ -46,7 +54,22 @@ export default async function ApplicationsPage({
             Add Application
           </Link>
         </header>
+        <section className="grid gap-4 md:grid-cols-5">
+          <div className="rounded-md border border-zinc-200 bg-white p-4">
+            <p className="text-sm text-zinc-500">All</p>
+            <p className="mt-2 text-2xl font-semibold">{allApplications.length}</p>
+          </div>
 
+          {summaryItems.map((item) => (
+            <div
+              key={item.label}
+              className="rounded-md border border-zinc-200 bg-white p-4"
+            >
+              <p className="text-sm text-zinc-500">{item.label}</p>
+              <p className="mt-2 text-2xl font-semibold">{item.value}</p>
+            </div>
+          ))}
+        </section>
         <nav className="flex flex-wrap gap-2">
           <Link
             href="/applications"
@@ -54,7 +77,7 @@ export default async function ApplicationsPage({
               selectedStatus === undefined
                 ? "border-zinc-950 bg-zinc-950 text-white"
                 : "border-zinc-300 bg-white text-zinc-700 hover:bg-zinc-100"
-              }`}
+            }`}
           >
             All
           </Link>
@@ -67,7 +90,7 @@ export default async function ApplicationsPage({
                 selectedStatus === status
                   ? "border-zinc-950 bg-zinc-950 text-white"
                   : "border-zinc-300 bg-white text-zinc-700 hover:bg-zinc-100"
-                }`}
+              }`}
             >
               {status}
             </Link>

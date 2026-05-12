@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const summaryItems = [
   { label: "Applied", value: 0 },
   { label: "Interviewing", value: 0 },
@@ -21,18 +23,18 @@ export default function Home() {
           </div>
 
           <nav className="flex gap-3">
-            <a
+            <Link
               href="/applications"
               className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-800 hover:bg-zinc-100"
             >
               Applications
-            </a>
-            <a
+            </Link>
+            <Link
               href="/applications/new"
               className="rounded-md bg-zinc-950 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800"
             >
               Add Application
-            </a>
+            </Link>
           </nav>
         </header>
 

@@ -89,7 +89,16 @@ export default async function ApplicationDetailPage({
                         </p>
                     </div>
                 </section>
-                <DeleteApplicationButton applicationId={application.id} />
+                <div className="flex flex-wrap gap-3">
+                    <Link
+                        href={`/applications/${application.id}/edit`}
+                        className="w-fit rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-800 hover:bg-zinc-100"
+                    >
+                        Edit Application
+                    </Link>
+                    <DeleteApplicationButton applicationId={application.id} />
+                </div>
+
             </div>
         </main>
     );

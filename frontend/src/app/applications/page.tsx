@@ -11,6 +11,20 @@ const statuses: ApplicationStatus[] = [
   "Withdrawn",
 ];
 
+function getDaysSince(dateValue: string) {
+  const startDate = new Date(dateValue);
+  const today = new Date();
+
+  startDate.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+
+  const millisecondsPerDay = 1000 * 60 * 60 * 24;
+  return Math.floor(
+    (today.getTime() - startDate.getTime()) / millisecondsPerDay,
+  );
+}
+
+
 type ApplicationsPageProps = {
   searchParams: Promise<{
     status?: string;
@@ -253,7 +267,11 @@ export default async function ApplicationsPage({
                 <span className="font-medium">{application.company}</span>
                 <span>{application.role}</span>
                 <span>{application.status}</span>
-                <span>{application.date_applied}</span>
+                <span className="text-zinc-500">
+                  {application.date_applied} · {getDaysSince(application.date_applied)}{" "}
+                  days ago
+                </span>
+
               </Link>
             ))}
           </section>

@@ -71,6 +71,13 @@ export default async function ApplicationsPage({
         new Date(a.date_applied).getTime() - new Date(b.date_applied).getTime(),
     )
     .at(0);
+
+  const recentApplications = allApplications
+    .toSorted(
+      (a, b) =>
+        new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
+    )
+    .slice(0, 5);
   return (
     <main className="min-h-screen bg-zinc-50 px-6 py-8 text-zinc-950">
       <div className="mx-auto flex max-w-6xl flex-col gap-6">
@@ -156,6 +163,44 @@ export default async function ApplicationsPage({
             </Link>
           </section>
         ) : null}
+        <section className="rounded-md border border-zinc-200 bg-white p-4">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm text-zinc-500">Recent Activity</p>
+              <h2 className="mt-1 text-lg font-semibold">Recently updated applications</h2>
+            </div>
+            <Link
+              href="/applications/board"
+              className="text-sm font-medium text-zinc-700 underline underline-offset-4 hover:text-zinc-950"
+            >
+              View board
+            </Link>
+          </div>
+
+          <div className="mt-4 divide-y divide-zinc-100">
+            {recentApplications.map((application) => (
+              <Link
+                key={application.id}
+                href={`/applications/${application.id}`}
+                className="grid gap-2 py-3 hover:bg-zinc-50 md:grid-cols-[1fr_auto]"
+              >
+                <div>
+                  <p className="font-medium text-zinc-950">
+                    {application.company}
+                  </p>
+                  <p className="text-sm text-zinc-600">{application.role}</p>
+                </div>
+
+                <div className="flex items-center gap-3 text-sm text-zinc-600 md:justify-end">
+                  <span>{application.status}</span>
+                  <span>
+                    Updated {new Date(application.updated_at).toLocaleDateString()}
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
         <nav className="flex flex-wrap gap-2">
           <Link
             href="/applications"

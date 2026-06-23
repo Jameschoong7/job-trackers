@@ -36,6 +36,48 @@ export default async function ApplicationsPage({
     value: allApplications.filter((application) => application.status === status)
       .length,
   }));
+  const activeApplications = allApplications.filter((application) =>
+    ["Applied", "Interviewing"].includes(application.status),
+  );
+
+  const interviewCount = allApplications.filter(
+    (application) => application.status === "Interviewing",
+  ).length;
+
+  const offerCount = allApplications.filter(
+    (application) => application.status === "Offered",
+  ).length;
+
+  const interviewRate =
+    allApplications.length === 0
+      ? 0
+      : Math.round((interviewCount / allApplications.length) * 100);
+
+  const offerRate =
+    allApplications.length === 0
+      ? 0
+      : Math.round((offerCount / allApplications.length) * 100);
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const applicationsNeedingFollowup = allApplications.filter((application) => {
+    if (!application.followup_date) {
+      return false;
+    }
+
+    const followupDate = new Date(application.followup_date);
+    followupDate.setHours(0, 0, 0, 0);
+
+    return followupDate <= today;
+  });
+
+  const oldestActiveApplication = activeApplications
+    .toSorted(
+      (a, b) =>
+        new Date(a.date_applied).getTime() - new Date(b.date_applied).getTime(),
+    )
+    .at(0);
   return (
     <main className="min-h-screen bg-zinc-50 px-6 py-8 text-zinc-950">
       <div className="mx-auto flex max-w-6xl flex-col gap-6">
@@ -84,6 +126,43 @@ export default async function ApplicationsPage({
             </div>
           ))}
         </section>
+        <section className="grid gap-4 md:grid-cols-4">
+          <div className="rounded-md border border-zinc-200 bg-white p-4">
+            <p className="text-sm text-zinc-500">Active Applications</p>
+            <p className="mt-2 text-2xl font-semibold">
+              {activeApplications.length}
+            </p>
+          </div>
+
+          <div className="rounded-md border border-zinc-200 bg-white p-4">
+            <p className="text-sm text-zinc-500">Interview Rate</p>
+            <p className="mt-2 text-2xl font-semibold">{interviewRate}%</p>
+          </div>
+
+          <div className="rounded-md border border-zinc-200 bg-white p-4">
+            <p className="text-sm text-zinc-500">Offer Rate</p>
+            <p className="mt-2 text-2xl font-semibold">{offerRate}%</p>
+          </div>
+
+          <div className="rounded-md border border-zinc-200 bg-white p-4">
+            <p className="text-sm text-zinc-500">Need Follow-up</p>
+            <p className="mt-2 text-2xl font-semibold">
+              {applicationsNeedingFollowup.length}
+            </p>
+          </div>
+        </section>
+
+        {oldestActiveApplication ? (
+          <section className="rounded-md border border-zinc-200 bg-white p-4">
+            <p className="text-sm text-zinc-500">Oldest Active Application</p>
+            <Link
+              href={`/applications/${oldestActiveApplication.id}`}
+              className="mt-2 block font-medium text-zinc-950 underline underline-offset-4"
+            >
+              {oldestActiveApplication.company} — {oldestActiveApplication.role}
+            </Link>
+          </section>
+        ) : null}
         <nav className="flex flex-wrap gap-2">
           <Link
             href="/applications"

@@ -61,16 +61,9 @@ export default async function ApplicationsPage({
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const applicationsNeedingFollowup = allApplications.filter((application) => {
-    if (!application.followup_date) {
-      return false;
-    }
-
-    const followupDate = new Date(application.followup_date);
-    followupDate.setHours(0, 0, 0, 0);
-
-    return followupDate <= today;
-  });
+  const followedUpApplications = allApplications.filter(
+    (application) => application.followup_date !== null,
+  );
 
   const oldestActiveApplication = activeApplications
     .toSorted(
@@ -145,9 +138,9 @@ export default async function ApplicationsPage({
           </div>
 
           <div className="rounded-md border border-zinc-200 bg-white p-4">
-            <p className="text-sm text-zinc-500">Need Follow-up</p>
+            <p className="text-sm text-zinc-500">Followed Up</p>
             <p className="mt-2 text-2xl font-semibold">
-              {applicationsNeedingFollowup.length}
+              {followedUpApplications.length}
             </p>
           </div>
         </section>
